@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Edit Page";
+}
+
+@model WebProject.Models.Entities.Concretes.Article
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/ckeditor/ckeditor.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+<div class="container pt-3">
+
+    <form asp-controller="Article" asp-action="UpdateArticle" method="post" class="container">
+        <div class="justify-content-end text-right">
+            <button id="publish" type="submit" class="btn btn-success btn-lg">Save</button>
+        </div>
+        <input type="text" placeholder="Article Title..." class="form-control p-3" style="visibility:hidden" asp-for="ArticleId" id="ArticleId" required />
+        <div class=" col-lg-10 d-flex mb-4">
+            <i class="fas fa-plus-circle text-center fa-2x m-2" style="color: #BDC3C7"></i>
+            <input type="text" placeholder="Article Title..." class="form-control p-3" asp-for="ArticleName" id="ArticleName" required />
+        </div>
+
+        <div class=" col-lg-10 d-flex mt-4">
+            <i class="fas fa-plus-circle text-center fa-2x m-2" style="color: #BDC3C7"></i>
+            <textarea rows="50" cols="50" class="form-control ckeditor" placeholder="Article Content..." asp-for="ArticleContent" id="ArticleContent" required></textarea>
+        </div>
+
+    </form>
+</div>
+
+<script>
+        $(document).ready(function () {
+            CKEDITOR.replace('#ArticleContent');
+            CKEDITOR.config.width = "100%";
+            CKEDITOR.config.height = "450px";
+        });
+        document.getElementById("ArticleId").value = localStorage.getItem("articleId");
+        document.getElementById("ArticleName").value= localStorage.getItem("title");
+        document.getElementById("ArticleContent").innerHTML = localStorage.getItem("content");
+</script>

@@ -1,0 +1,130 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<body>
+    <div class="container">
+        <div class="p-4 d-flex justify-content-center">
+            <form class="d-flex col-lg-10 ">
+                <input type="text" placeholder="Search.." name="search" class=" col-lg-8  ">
+                <button type="submit" class="btn btn-secondary col-lg-1 "><i class="fa fa-search "></i></button>
+            </form>
+            <button type="submit" class="btn btn-secondary col-lg-2 text-center pl-2" style="text-decoration:none" onclick="location.href='@Url.Action("Article", "Home")'">
+                Add Article <i class="fas fa-plus-circle fa-2x"></i>
+            </button>
+        </div>
+
+
+        <table class="table table-striped" id="table">
+
+            <thead>
+                <tr>
+                    
+                    <th scope="col">Article Name</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Published Date</th>
+                    <th scope="col">Updated Date</th>
+                    <th scope="col">Read</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+
+
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script>
+    window.onload = function () {
+        $.ajax({
+            url: "https://localhost:44329/get/all/articles/by/user",
+            type: 'GET',
+            success: function (res) {
+                let table = document.getElementById("table");
+                if (res.length != 0) {
+
+                }
+                for (let i = 0; i < res.length; i++) {
+                    let row = table.insertRow(i + 1);
+                    let cell0 = row.insertCell(0);
+                    let cell1 = row.insertCell(1);
+                    let cell2 = row.insertCell(2); 9
+                    let cell3 = row.insertCell(3);
+                    let cell4 = row.insertCell(4);
+                    let cell5 = row.insertCell(5);
+                    let cell6 = row.insertCell(6);
+                    let content = res[i].articleContent;
+                    cell0.innerHTML = res[i].articleName;
+                    cell1.innerHTML = res[i].author;
+                    cell2.innerHTML = res[i].publishedDate;
+                    cell3.innerHTML = res[i].updatedDate;
+                    cell4.innerHTML = '<button id="btnread' + res[i].articleId + '"' + 'type="button" class="btn btn-success" onclick="read(' + res[i].articleId + ')" >Read</button>';
+                    cell5.innerHTML = '<button id="btnread' + res[i].articleId + '"' + 'type="button" class="btn btn-success" onclick="updateArticle(' + res[i].articleId + ')" >Edit</button>';
+                    cell6.innerHTML = '<button id="btnread' + res[i].articleId + '"' + 'type="button" class="btn btn-danger" onclick="deleteArticle(' + res[i].articleId + ')" >Delete</button>';
+                }
+            }
+        });
+    }
+
+    function read(id) {
+        $.ajax({
+            url: "https://localhost:44329/get/article",
+            type: "GET",
+            data: { id: id},
+            success: function (response) {
+                localStorage.setItem("title", String(response.articleName))
+                localStorage.setItem("content", String(response.articleContent));
+                window.location.replace("https://localhost:44329/Home/ArticleContent");
+            },
+            error: function (data, status) {
+                console.log(data + " " + status)
+            }
+        });
+    }
+
+    function deleteArticle(id) {
+        $.ajax({
+            url: "https://localhost:44329/delete/article",
+            type: "GET",
+            data: { id: id },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (data, status) {
+                console.log(data + " " + status)
+            }
+        });
+    }
+
+    function updateArticle(id) {
+        $.ajax({
+            url: "https://localhost:44329/get/article",
+            type: "GET",
+            data: { id: id },
+            success: function (response) {
+                localStorage.setItem("title", String(response.articleName));
+                localStorage.setItem("content", String(response.articleContent));
+                localStorage.setItem("articleId", String(response.articleId));
+                window.location.replace("https://localhost:44329/Home/EditArticle");
+            },
+            error: function (data, status) {
+                console.log(data + " " + status)
+            }
+        });
+    }
+</script>

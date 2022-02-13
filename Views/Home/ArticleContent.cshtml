@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;300&display=swap" rel="stylesheet">
+<style>
+    body {
+        background-image: url("https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+        height:auto;
+    }
+    #fdiv {
+        
+    }
+
+</style>
+<div class="col-lg-10 container" id="fdiv"  style="padding-top:3%;">
+    <div class="container">
+        <h3 class="text-center p-3" id="title"></h3>
+        <p  id="contentVal" style="font-family: 'Raleway', sans-serif; font-weight:bold;color:black; background-color: white;padding:50px;" class=""></p>
+    </div>
+    </div>
+
+    <script>
+        document.getElementById("title").innerHTML = localStorage.getItem("title");
+        document.getElementById("contentVal").innerHTML = localStorage.getItem("content");
+
+    </script>
